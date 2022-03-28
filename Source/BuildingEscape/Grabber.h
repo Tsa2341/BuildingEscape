@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Components/InputComponent.h"
+#include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "Grabber.generated.h"
 
 
@@ -20,11 +22,34 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	// Ray-cast and grab an object
+	void Grab();
+
+	// Called when Grab is released
+	void Released();
+
+	void GetPhysicsHandleComponent();
+
+	void BindInputAction();
+
+	void SetViewLineEnd();
+
+	FHitResult GetHit();
+
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private: 
+	// Disance in which a player can reach in meters
 	float Reach = 100.f;
-		
+
+	UPhysicsHandleComponent* PhysicsHandle = nullptr;
+
+	UInputComponent* InputComponent = nullptr;
+
+	// The last point for the trace-line
+	FVector PlayerViewLineEnd;
+	FVector PlayerViewPointLocation;
+
 };
